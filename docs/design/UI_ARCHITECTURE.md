@@ -98,3 +98,23 @@ Dark theme with trading-optimized colors:
 - **Font**: Inter (sans), JetBrains Mono (monospace)
 
 See the full design system in the [backend repo's API_AND_UI.md](https://github.com/noufal85/trading-backtester_v2/blob/main/docs/design/API_AND_UI.md).
+
+## Component Props & Interfaces
+
+All component TypeScript interfaces are documented in [`docs/components/COMPONENT_CATALOG.md`](../components/COMPONENT_CATALOG.md).
+
+Key interfaces summary:
+
+| Component | Key Props |
+|-----------|-----------|
+| `MetricsCard` | `title`, `value`, `change` (% delta, colors green/red) |
+| `EquityCurveChart` | `data: EquityPoint[]`, `benchmark?`, `showDrawdown?` |
+| `StrategyCard` | `name`, `description`, `tags`, `bestSharpe?` |
+| `ParameterInput` | `name`, `schema` (type/min/max/options), `value`, `onChange` |
+| `TradesTable` | `backtestId`, virtualized pagination, sort/filter |
+| `BacktestProgressBar` | `backtestId` — self-subscribes to WebSocket |
+| `CorrelationMatrix` | `labels: string[]`, `matrix: number[][]` |
+
+## API Client
+
+Typed API client lives in `src/api/client.ts` with full TypeScript types in `src/types/api.ts`. These match the backend OpenAPI spec at `docs/api/openapi.yaml` in the backend repo.
