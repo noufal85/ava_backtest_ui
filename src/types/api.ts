@@ -16,6 +16,8 @@ export interface BacktestSummary {
   sharpe_ratio: number | null;
   created_at: string;
   duration_seconds: number | null;
+  market_code: string;
+  currency: string;
 }
 
 export interface Backtest {
@@ -29,6 +31,8 @@ export interface Backtest {
   initial_capital: number;
   status: BacktestStatus;
   created_at: string;
+  market_code: string;
+  currency: string;
 }
 
 export interface BacktestDetail extends Backtest {
@@ -69,6 +73,7 @@ export interface CreateBacktestRequest {
   sizing?: Record<string, unknown>;
   risk_rules?: Record<string, unknown>[];
   regime_filter?: Record<string, unknown>;
+  market: string;
 }
 
 export interface RunStrategyBacktestRequest {
@@ -201,4 +206,17 @@ export type WsMessage =
 export interface Paginated<T> {
   items: T[];
   total: number;
+}
+
+// ---------------------------------------------------------------------------
+// Markets
+// ---------------------------------------------------------------------------
+
+export interface Market {
+  code: string;
+  name: string;
+  currency: string;
+  currency_symbol: string;
+  default_universe: string;
+  is_default: boolean;
 }

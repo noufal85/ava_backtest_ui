@@ -16,9 +16,11 @@ import type {
   CandleResponse,
   CorrelationResponse,
   PortfolioMetrics,
-} from "../types/api";
+  Market,
+} from "@/types/api";
+import { getSelectedMarket } from "@/contexts/MarketContext";
 
-const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:8201";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -49,6 +51,14 @@ function qs(params: Record<string, unknown>): string {
 }
 
 // ---------------------------------------------------------------------------
+// Markets
+// ---------------------------------------------------------------------------
+
+export async function listMarkets(): Promise<Market[]> {
+  return request("/api/v2/markets");
+}
+
+// ---------------------------------------------------------------------------
 // Backtests
 // ---------------------------------------------------------------------------
 
@@ -57,8 +67,9 @@ export async function listBacktests(opts?: {
   strategy?: string;
   limit?: number;
   offset?: number;
+  market?: string;
 }): Promise<Paginated<BacktestSummary>> {
-  return request(`/api/v2/backtests${qs(opts ?? {})}`);
+  return request(`/api/v2/backtests${qs({ market: getSelectedMarket(), ...opts })}`);
 }
 
 export async function createBacktest(
@@ -66,7 +77,7 @@ export async function createBacktest(
 ): Promise<Backtest> {
   return request("/api/v2/backtests", {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, market: body.market || getSelectedMarket() }),
   });
 }
 
@@ -92,8 +103,8 @@ export async function getEquityCurve(
 // Strategies
 // ---------------------------------------------------------------------------
 
-export async function listStrategies(): Promise<StrategySummary[]> {
-  return request("/api/v2/strategies");
+export async function listStrategies(market?: string): Promise<StrategySummary[]> {
+  return request(`/api/v2/strategies${qs({ market: market ?? getSelectedMarket() })}`);
 }
 
 export async function getStrategy(
@@ -117,8 +128,8 @@ export async function runStrategyBacktest(
 // Universes
 // ---------------------------------------------------------------------------
 
-export async function listUniverses(): Promise<Universe[]> {
-  return request("/api/v2/universes");
+export async function listUniverses(market?: string): Promise<Universe[]> {
+  return request(`/api/v2/universes${qs({ market: market ?? getSelectedMarket() })}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -130,8 +141,9 @@ export async function getCandles(opts: {
   timeframe?: string;
   start: string;
   end: string;
+  market?: string;
 }): Promise<CandleResponse> {
-  return request(`/api/v2/data/candles${qs(opts)}`);
+  return request(`/api/v2/data/candles${qs({ market: getSelectedMarket(), ...opts })}`);
 }
 
 // ---------------------------------------------------------------------------
