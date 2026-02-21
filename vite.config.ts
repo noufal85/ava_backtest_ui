@@ -7,5 +7,20 @@ export default defineConfig({
   resolve: {
     alias: { "@": path.resolve(__dirname, "./src") }
   },
-  server: { port: 5173 }
+  server: {
+    host: "0.0.0.0",   // bind to all interfaces — accessible via Tailscale
+    port: 8203,
+    proxy: {
+      // Dev proxy: forward /api/* to the FastAPI backend
+      "/api": {
+        target: "http://localhost:8201",
+        changeOrigin: true,
+        ws: true          // proxy WebSocket too
+      }
+    }
+  },
+  preview: {
+    host: "0.0.0.0",
+    port: 8203
+  }
 })
