@@ -9,6 +9,17 @@ const TABS = ["Parameters", "Setup", "Preview & Run"] as const
 
 const SUSPICIOUS_SYMBOLS = ["AAPL", "TSLA", "NVDA", "TCS", "RELIANCE"]
 
+function defaultDates(): { start: string; end: string } {
+  const end = new Date()
+  end.setDate(end.getDate() - 1)          // yesterday
+  const start = new Date(end)
+  start.setFullYear(start.getFullYear() - 1) // 1 year back
+  const fmt = (d: Date) => d.toISOString().slice(0, 10)
+  return { start: fmt(start), end: fmt(end) }
+}
+
+const { start: DEFAULT_START, end: DEFAULT_END } = defaultDates()
+
 export function BacktestRunner() {
   const { name } = useParams<{ name: string }>()
   const navigate = useNavigate()
@@ -16,8 +27,8 @@ export function BacktestRunner() {
 
   const [tab, setTab] = useState(0)
   const [params, setParams] = useState<Record<string, unknown>>({})
-  const [startDate, setStartDate] = useState("2020-01-01")
-  const [endDate, setEndDate] = useState("2024-01-01")
+  const [startDate, setStartDate] = useState(DEFAULT_START)
+  const [endDate, setEndDate] = useState(DEFAULT_END)
   const [universe, setUniverse] = useState("")
   const [capital, setCapital] = useState(100000)
   const [isOOS, setIsOOS] = useState(false)
