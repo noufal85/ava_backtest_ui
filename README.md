@@ -1,8 +1,8 @@
-# Trading Backtester UI V2
+# Ava Backtest UI
 
 **Professional dark-themed trading research dashboard — React + TypeScript + Vite + TailwindCSS.**
 
-> Frontend for [trading-backtester_v2](https://github.com/noufal85/trading-backtester_v2) backend.
+> Frontend for [ava_backtest_api](https://github.com/noufal85/ava_backtest_api) — 124 strategies, TradingView charts, real-time WebSocket progress.
 
 ## Tech Stack
 
